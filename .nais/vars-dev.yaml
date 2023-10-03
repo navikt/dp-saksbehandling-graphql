@@ -1,4 +1,4 @@
-ingresses:
+ingress:
   - https://dp-saksbehandling-graphql.intern.dev.nav.no
 
 dp-vedtak_url: "http://dp-vedtak"
