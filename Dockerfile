@@ -10,7 +10,6 @@ COPY next.config.js ./
 COPY package.json ./
 
 COPY public ./public
-COPY .next/standalone ./
 COPY .next/static ./.next/static
 
 EXPOSE 3000
