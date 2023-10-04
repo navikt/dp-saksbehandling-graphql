@@ -1,4 +1,4 @@
-FROM gcr.io/distroless/nodejs18-debian11
+FROM node:18-alpine
 
 WORKDIR /usr/src/app
 
@@ -10,9 +10,10 @@ COPY next.config.js ./
 COPY package.json ./
 
 COPY public ./public
+COPY .next/standalone ./
 COPY .next/static ./.next/static
 
 EXPOSE 3000
-USER node
 
-CMD ["server.js"]
+CMD ["node", "server.js"]
+
