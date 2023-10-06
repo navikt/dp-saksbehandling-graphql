@@ -18,6 +18,7 @@ const resolvers = {
   Query: {
     hello: () => 'world',
     vedtak: () => vedtakResponse,
+    // @ts-ignore
     todos: async (_, __, { dataSources }: ContextValue) => {
       return dataSources.todosAPI.getTodos();
     },
