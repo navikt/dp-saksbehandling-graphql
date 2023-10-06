@@ -6,7 +6,7 @@ import { GraphQLError } from 'graphql';
 import { vedtakResponse } from './mock/vedtakResponse';
 import { TodosAPI } from './todos-api';
 import { NextRequest } from 'next/server';
-import { getSession, getVedtakOboToken } from './auth/auth.utils';
+import { getSession } from './auth/auth.utils';
 
 interface ContextValue {
   dataSources: {
@@ -68,7 +68,6 @@ const handler = startServerAndCreateNextHandler(server, {
 
     try {
       const session = await getSession(request);
-      await getVedtakOboToken(session);
 
       const { cache } = server;
 
@@ -79,9 +78,11 @@ const handler = startServerAndCreateNextHandler(server, {
       };
     } catch (error) {
       throw new GraphQLError('Feil ved henting av sesjon', {
+
         extensions: {
           code: 'UNAUTHENTICATED',
           http: { status: 401 },
+          error,
         },
       });
     }
