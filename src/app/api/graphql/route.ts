@@ -20,8 +20,8 @@ const resolvers = {
   Query: {
     hello: () => 'world',
     // @ts-ignore
-    vedtak: async (_, __, { dataSources }: ContextValue) => {
-      return dataSources.vedtakAPI.hentVedtak();
+    vedtak: async (_, { ident }: { ident: string }, { dataSources }: ContextValue) => {
+      return dataSources.vedtakAPI.hentVedtak(ident);
     },
     // @ts-ignore
     todos: async (_, __, { dataSources }: ContextValue) => {
@@ -58,7 +58,7 @@ const typeDefs = gql`
 
   type Query {
     hello: String
-    vedtak: Vedtak
+    vedtak (ident: String!): Vedtak
     todos: [Todo]
   }
 `;
@@ -74,8 +74,6 @@ const handler = startServerAndCreateNextHandler(server, {
     try {
       const session = await getSession(request);
       const token = await getVedtakOboToken(session);
-
-      console.log("OBO token: ", token);
 
       const { cache } = server;
 
