@@ -24,11 +24,9 @@ export class VedtakAPI extends RESTDataSource {
     this.token = options.token;
   }
 
-  override willSendRequest(_path: string, request: AugmentedRequest) {
-    request.headers['authorization'] = this.token;
-  }
-
   async hentVedtak(): Promise<IVedtak[]> {
+    console.log("WITH BEARER: ", `Bearer ${this.token}`);
+
     return this.post<IVedtak[]>("/vedtak", {
       headers: {
         Authorization: `Bearer ${this.token}`

@@ -75,6 +75,8 @@ const handler = startServerAndCreateNextHandler(server, {
       const session = await getSession(request);
       const token = await getVedtakOboToken(session);
 
+      console.log("OBO token: ", token);
+
       const { cache } = server;
 
       return {
