@@ -6,18 +6,23 @@ import { GraphQLError } from 'graphql';
 import { vedtakResponse } from './mock/vedtakResponse';
 import { TodosAPI } from './todos-api';
 import { NextRequest } from 'next/server';
-import { getSession } from './auth/auth.utils';
+import { getSession, getVedtakOboToken } from './auth/auth.utils';
+import { VedtakAPI } from './vedtak-api';
 
 interface ContextValue {
   dataSources: {
     todosAPI: TodosAPI;
+    vedtakAPI: VedtakAPI
   };
 }
 
 const resolvers = {
   Query: {
     hello: () => 'world',
-    vedtak: () => vedtakResponse,
+    // @ts-ignore
+    vedtak: async (_, __, { dataSources }: ContextValue) => {
+      return dataSources.vedtakAPI.hentVedtak();
+    },
     // @ts-ignore
     todos: async (_, __, { dataSources }: ContextValue) => {
       return dataSources.todosAPI.getTodos();
@@ -68,12 +73,14 @@ const handler = startServerAndCreateNextHandler(server, {
 
     try {
       const session = await getSession(request);
+      const token = await getVedtakOboToken(session);
 
       const { cache } = server;
 
       return {
         dataSources: {
           todosAPI: new TodosAPI({ cache }),
+          vedtakAPI: new VedtakAPI({ token, cache }),
         },
       };
     } catch (error) {
