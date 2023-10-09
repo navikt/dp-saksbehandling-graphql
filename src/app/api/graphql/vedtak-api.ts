@@ -26,14 +26,16 @@ export class VedtakAPI extends RESTDataSource {
 
   async hentVedtak(ident: String): Promise<IVedtak[]> {
 
-    console.log("request options: ", { url: this.baseURL, body: JSON.stringify({ ident }) });
+    console.log("request options: ", { token: this.token, url: this.baseURL, body: JSON.stringify({ ident }) });
 
     return this.post<IVedtak[]>("/vedtak", {
-      body: JSON.stringify({ ident }),
+      method: "POST",
       headers: {
-        Content_Type: "application/json",
+        "Content-Type": "application/json",
+        Accept: "application/json",
         Authorization: `Bearer ${this.token}`
       },
+      body: JSON.stringify({ ident }),
     });
   }
 
