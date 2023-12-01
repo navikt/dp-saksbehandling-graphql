@@ -25,13 +25,12 @@ spec:
   replicas:
     min: 1
     max: 2
-    cpuThresholdPercentage: 75
   resources:
     limits:
-      memory: 2000Mi
+      memory: 1024Mi
     requests:
       cpu: 50m
-      memory: 1024Mi
+      memory: 512Mi
   ingresses:
     - {{ingress}}
   env:
@@ -60,7 +59,7 @@ spec:
     outbound:
       rules:
         - application: dp-vedtak
-    inbound: 
+    inbound:
       rules:
         - application: dp-saksbehandling-frontend
         {{#if wonderwalled}}
